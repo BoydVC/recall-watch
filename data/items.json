@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "label": "SAMPLE",
+  "note": "Generic sample household register — edit freely. No real VINs or serial numbers.",
+  "items": [
+    {
+      "id": "veh-honda-odyssey-2019",
+      "name": "Sample family minivan",
+      "category": "vehicle",
+      "make": "HONDA",
+      "model": "ODYSSEY",
+      "year": 2019,
+      "notes": "SAMPLE entry — replace with your make/model/year. No VIN stored.",
+      "source": "nhtsa"
+    },
+    {
+      "id": "veh-subaru-outback-2020",
+      "name": "Sample wagon",
+      "category": "vehicle",
+      "make": "SUBARU",
+      "model": "OUTBACK",
+      "year": 2020,
+      "notes": "SAMPLE entry for a second vehicle slot.",
+      "source": "nhtsa"
+    },
+    {
+      "id": "seat-graco-extend2fit",
+      "name": "Sample convertible car seat",
+      "category": "car_seat",
+      "brand": "Graco",
+      "model": "Extend2Fit",
+      "productQuery": "Graco",
+      "notes": "SAMPLE — edit brand/model to match seats you own. No serial stored.",
+      "source": "cpsc"
+    },
+    {
+      "id": "seat-evenflo-revolve360",
+      "name": "Sample rotating car seat",
+      "category": "car_seat",
+      "brand": "Evenflo",
+      "model": "Revolve360",
+      "productQuery": "Evenflo",
+      "notes": "SAMPLE kids gear — swap for your seat model. CPSC search by brand.",
+      "source": "cpsc"
+    },
+    {
+      "id": "gear-bike-helmet",
+      "name": "Sample kids bike helmet",
+      "category": "kids_gear",
+      "brand": "Schwinn",
+      "model": "Thrasher",
+      "productQuery": "bicycle helmet",
+      "notes": "SAMPLE — check CPSC for helmet/gear recalls.",
+      "source": "cpsc"
+    },
+    {
+      "id": "app-ge-fridge",
+      "name": "Sample refrigerator",
+      "category": "appliance",
+      "brand": "GE",
+      "model": "GSS25GSHSS",
+      "productQuery": "refrigerator",
+      "notes": "SAMPLE appliance model label — edit to your unit.",
+      "source": "cpsc"
+    },
+    {
+      "id": "app-dyson-vac",
+      "name": "Sample vacuum",
+      "category": "appliance",
+      "brand": "Dyson",
+      "model": "V11",
+      "productQuery": "vacuum",
+      "notes": "SAMPLE — broad CPSC vacuum search; edit to your brand/model.",
+      "source": "cpsc"
+    }
+  ]
+}

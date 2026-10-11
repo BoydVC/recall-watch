@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Recall Watch · household NHTSA / CPSC checker</title>
+<meta name="theme-color" content="#0c1220">
+<meta name="description" content="Household register that checks public NHTSA and CPSC recall feeds. Sample items editable locally. DEMO fallback when APIs fail.">
+<style>/*__CSS__*/</style>
+</head>
+<body>
+<div class="bg-wash" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="brand">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 48 48" width="42" height="42">
+        <defs>
+          <linearGradient id="rw" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f97316"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="44" height="44" rx="12" fill="#0a1220" stroke="url(#rw)" stroke-width="2"/>
+        <path d="M24 12l12 22H12L24 12z" fill="none" stroke="url(#rw)" stroke-width="2.2" stroke-linejoin="round"/>
+        <circle cx="24" cy="28" r="1.8" fill="#fbbf24"/>
+        <path d="M24 18v7" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Recall Watch</h1>
+      <p class="tag">Household register · NHTSA + CPSC · local only</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <span class="pill" id="modePill">checking…</span>
+    <span class="pill clock" id="clockPill">—</span>
+  </div>
+</header>
+
+<div id="demoBanner" class="demo-banner" hidden>
+  DEMO matches — live NHTSA/CPSC fetch unavailable. Not real determinations for your gear.
+</div>
+
+<nav class="tabs" role="tablist" aria-label="Recall Watch screens">
+  <button class="tab active" data-view="home" role="tab" aria-selected="true">Home</button>
+  <button class="tab" data-view="register" role="tab" aria-selected="false">Register</button>
+  <button class="tab" data-view="matches" role="tab" aria-selected="false">Matches</button>
+  <button class="tab" data-view="about" role="tab" aria-selected="false">About</button>
+</nav>
+
+<main>
+  <section id="view-home" class="view active" role="tabpanel">
+    <div class="hero-stats" id="heroStats"></div>
+    <div class="panel glow">
+      <div class="panel-head">
+        <h2>Flagged for review</h2>
+        <button type="button" class="btn" id="btnRefreshHint" title="Rebuild refreshes live feeds">Snapshot</button>
+      </div>
+      <p class="hint">Severity is heuristic from public wording (park-it / fire / injury keywords). Always open the official link.</p>
+      <div id="homeMatches" class="match-list compact"></div>
+    </div>
+    <div class="split">
+      <div class="panel">
+        <h3>Register snapshot</h3>
+        <ul class="mini-list" id="homeItems"></ul>
+      </div>
+      <div class="panel">
+        <h3>Sources</h3>
+        <ul class="mini-list">
+          <li><strong>NHTSA</strong> — vehicles by make / model / year</li>
+          <li><strong>CPSC</strong> — products via saferproducts.gov</li>
+          <li><strong>DEMO</strong> — labeled offline placeholders only</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="view-register" class="view" role="tabpanel" hidden>
+    <div class="panel-head row">
+      <div>
+        <h2>Household register</h2>
+        <p class="hint">SAMPLE seeds — edit, add, or remove. Saved in this browser (localStorage). No VINs or serials required.</p>
+      </div>
+      <div class="row-actions">
+        <button type="button" class="btn ghost" id="btnResetItems">Reset to seed</button>
+        <button type="button" class="btn big" id="btnAddItem">+ Add item</button>
+      </div>
+    </div>
+    <div id="itemForm" class="panel form-panel" hidden>
+      <h3 id="formTitle">Add item</h3>
+      <form id="editForm" class="form-grid">
+        <label>Name <input name="name" required maxlength="80" placeholder="e.g. Sample car seat"></label>
+        <label>Category
+          <select name="category">
+            <option value="vehicle">Vehicle</option>
+            <option value="car_seat">Car seat</option>
+            <option value="kids_gear">Kids gear</option>
+            <option value="appliance">Appliance</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label>Source
+          <select name="source">
+            <option value="nhtsa">NHTSA (vehicle)</option>
+            <option value="cpsc">CPSC (product)</option>
+          </select>
+        </label>
+        <label class="veh-only">Make <input name="make" maxlength="40" placeholder="HONDA"></label>
+        <label class="veh-only">Model <input name="model" maxlength="40" placeholder="ODYSSEY"></label>
+        <label class="veh-only">Year <input name="year" type="number" min="1980" max="2030" placeholder="2019"></label>
+        <label class="cpsc-only">Brand <input name="brand" maxlength="40" placeholder="Graco"></label>
+        <label class="cpsc-only">Model / product <input name="productModel" maxlength="60" placeholder="Extend2Fit"></label>
+        <label class="cpsc-only full">CPSC search query <input name="productQuery" maxlength="80" placeholder="Graco car seat"></label>
+        <label class="full">Notes <input name="notes" maxlength="160" placeholder="SAMPLE — optional"></label>
+        <input type="hidden" name="id">
+        <div class="form-actions full">
+          <button type="submit" class="btn big">Save</button>
+          <button type="button" class="btn ghost" id="btnCancelForm">Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div id="itemList" class="item-grid"></div>
+  </section>
+
+  <section id="view-matches" class="view" role="tabpanel" hidden>
+    <div class="panel-head row">
+      <div>
+        <h2>Recall matches</h2>
+        <p class="hint" id="matchesHint">From public feeds or clearly labeled DEMO.</p>
+      </div>
+      <div class="filters" id="sevFilters">
+        <button type="button" class="chip active" data-sev="all">All</button>
+        <button type="button" class="chip" data-sev="critical">Critical</button>
+        <button type="button" class="chip" data-sev="high">High</button>
+        <button type="button" class="chip" data-sev="medium">Medium</button>
+        <button type="button" class="chip" data-sev="low">Low</button>
+      </div>
+    </div>
+    <div id="matchList" class="match-list"></div>
+  </section>
+
+  <section id="view-about" class="view" role="tabpanel" hidden>
+    <div class="panel about-card">
+      <h2>About Recall Watch</h2>
+      <p><strong>Recall Watch</strong> is a TokenMax local utility: keep a household register of cars, car seats, kids’ gear, and appliances, then flag possible matches against public <strong>NHTSA</strong> and <strong>CPSC</strong> recall APIs.</p>
+      <ul>
+        <li>Never invents recall facts — only API results or clearly labeled <strong>DEMO</strong> placeholders.</li>
+        <li>Seed items are generic <strong>SAMPLE</strong> entries (no real VINs/serials). Edit them in Register.</li>
+        <li>Edits stay in <code>localStorage</code> on this device.</li>
+        <li>Live snapshot is baked at build time (<code>data/recalls.json</code>). Offline single file: <code>dist/recall-watch.html</code>.</li>
+      </ul>
+      <h3>Official sources</h3>
+      <ul>
+        <li><a href="https://www.nhtsa.gov/recalls" target="_blank" rel="noopener">NHTSA Recalls</a> · API <code>api.nhtsa.gov/recalls/recallsByVehicle</code></li>
+        <li><a href="https://www.cpsc.gov/Recalls" target="_blank" rel="noopener">CPSC Recalls</a> · API <code>saferproducts.gov/RestWebServices/Recall</code></li>
+      </ul>
+      <p class="muted" id="aboutMeta">—</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Recall Watch · TokenMax · port 4310</span>
+  <span id="footMeta">—</span>
+</footer>
+
+<script>
+window.__DATA__ = /*__DATA__*/ null /*__/DATA__*/;
+</script>
+<script>/*__APP__*/</script>
+</body>
+</html>

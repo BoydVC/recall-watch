@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "label": "DEMO",
+  "note": "Clearly labeled DEMO matches for offline / API-failure demos. Not real recall determinations for your items.",
+  "matches": [
+    {
+      "id": "demo-nhtsa-1",
+      "itemId": "veh-honda-odyssey-2019",
+      "itemName": "Sample family minivan",
+      "source": "nhtsa",
+      "demo": true,
+      "severity": "high",
+      "title": "[DEMO] Sample minivan — rearview camera intermittent failure (illustrative)",
+      "campaign": "DEMO-00V000000",
+      "component": "BACK OVER PREVENTION: CAMERA",
+      "summary": "DEMO ONLY. Illustrative text for UI testing when NHTSA is unreachable. Not a real campaign for your vehicle.",
+      "consequence": "DEMO: camera image may not display.",
+      "remedy": "DEMO: dealers would inspect/replace camera module under a real campaign.",
+      "date": "2024-06-15",
+      "manufacturer": "DEMO Manufacturer",
+      "url": "https://www.nhtsa.gov/recalls",
+      "parkIt": false
+    },
+    {
+      "id": "demo-cpsc-1",
+      "itemId": "seat-graco-extend2fit",
+      "itemName": "Sample convertible car seat",
+      "source": "cpsc",
+      "demo": true,
+      "severity": "medium",
+      "title": "[DEMO] Sample car seat — harness adjuster inspection (illustrative)",
+      "campaign": "DEMO-25-000",
+      "component": "Fall hazard (illustrative)",
+      "summary": "DEMO ONLY. Placeholder CPSC-style match so the Matches screen is usable offline. Check cpsc.gov for real notices.",
+      "consequence": "DEMO: illustrative injury hazard language.",
+      "remedy": "DEMO: contact manufacturer if a real recall applies.",
+      "date": "2025-01-10",
+      "manufacturer": "DEMO Brand",
+      "url": "https://www.cpsc.gov/Recalls",
+      "parkIt": false
+    },
+    {
+      "id": "demo-cpsc-2",
+      "itemId": "app-ge-fridge",
+      "itemName": "Sample refrigerator",
+      "source": "cpsc",
+      "demo": true,
+      "severity": "low",
+      "title": "[DEMO] Sample refrigerator — ice maker water line advisory (illustrative)",
+      "campaign": "DEMO-24-111",
+      "component": "Leak / slip hazard (illustrative)",
+      "summary": "DEMO ONLY. Not a determination that your appliance is recalled.",
+      "consequence": "DEMO: illustrative leak language.",
+      "remedy": "DEMO: check model/serial on the manufacturer site for real campaigns.",
+      "date": "2024-11-02",
+      "manufacturer": "DEMO Appliance Co",
+      "url": "https://www.cpsc.gov/Recalls",
+      "parkIt": false
+    }
+  ]
+}
